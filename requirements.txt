@@ -1,0 +1,12 @@
+# Telegram Bot Framework
+python-telegram-bot==21.10
+
+# HTTP Client for webhook requests
+aiohttp==3.11.11
+requests==2.32.3
+
+# Environment variables management
+python-dotenv==1.0.1
+
+# Async support
+asyncio==3.4.3

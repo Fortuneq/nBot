@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  telegram-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nbot-telegram
+    restart: unless-stopped
+
+    # Переменные окружения из файла
+    env_file:
+      - .env
+
+    # Логирование
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    # Ограничения ресурсов
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+    # Политика перезапуска
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+    # Монтирование для логов (опционально)
+    volumes:
+      - ./logs:/app/logs:rw
+
+    # Сеть
+    networks:
+      - bot-network
+
+networks:
+  bot-network:
+    driver: bridge
